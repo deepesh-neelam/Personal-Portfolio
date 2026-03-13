@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Deepesh Karthik Neelam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5f2;
+      --ink: #1a1916;
+      --muted: #8a8780;
+      --accent: #c9a96e;
+      --line: #e2ded8;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem 3rem;
+      background: rgba(247, 245, 242, 0.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+      opacity: 0; animation: fadeDown 0.7s 0.1s forwards;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 500; letter-spacing: 0.04em;
+      color: var(--ink); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    .hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 4rem;
+      padding: 8rem 3rem 4rem;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .hero-text { opacity: 0; animation: fadeUp 0.8s 0.3s forwards; }
+    .hero-eyebrow {
+      font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1rem;
+    }
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 300; line-height: 1.05;
+      margin-bottom: 1.5rem;
+    }
+    .hero-name em { font-style: italic; color: var(--accent); }
+    .hero-desc { color: var(--muted); max-width: 38ch; margin-bottom: 2.5rem; line-height: 1.8; }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: var(--ink); color: var(--white);
+      padding: 0.85rem 2rem; font-size: 0.82rem;
+      letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .hero-cta:hover { background: var(--accent); transform: translateY(-1px); }
+
+    .hero-visual {
+      opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+      display: flex; justify-content: center;
+    }
+    .avatar-frame {
+      width: 320px; height: 400px;
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-frame img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center top;
+      display: block;
+    }
+    .avatar-border {
+      position: absolute; top: -12px; right: -12px;
+      width: 320px; height: 400px;
+      border: 1.5px solid var(--accent);
+      z-index: -1;
+    }
+
+    section { padding: 5rem 3rem; max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.7rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.15;
+      margin-bottom: 2.5rem;
+    }
+    hr.divider { border: none; border-top: 1px solid var(--line); margin: 0 3rem; }
+
+    .about-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; align-items: start; }
+    .about-aside {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 300; line-height: 1.5; color: var(--muted);
+      font-style: italic;
+    }
+    .about-body p { color: var(--muted); margin-bottom: 1rem; }
+    .about-body p strong { color: var(--ink); font-weight: 500; }
+
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .project-card {
+      background: var(--white); border: 1px solid var(--line);
+      padding: 2rem; position: relative; overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+    }
+    .project-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.07); }
+    .project-card::before {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 2px; background: var(--accent);
+      transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+    }
+    .project-card:hover::before { transform: scaleX(1); }
+    .project-num {
+      font-family: 'Cormorant Garamond', serif; font-size: 0.9rem;
+      color: var(--accent); margin-bottom: 1.2rem;
+    }
+    .project-title { font-weight: 500; margin-bottom: 0.5rem; font-size: 1.05rem; }
+    .project-desc { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.6; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.3rem 0.7rem; border: 1px solid var(--line); color: var(--muted);
+    }
+
+    .skills-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 2rem; }
+    .skill-group-title { font-weight: 500; font-size: 0.85rem; letter-spacing: 0.06em; margin-bottom: 1rem; }
+    .skill-list { list-style: none; }
+    .skill-list li {
+      font-size: 0.88rem; color: var(--muted); padding: 0.5rem 0;
+      border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 0.5rem;
+    }
+    .skill-list li::before { content: '–'; color: var(--accent); }
+
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .contact-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 300; line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .contact-heading em { font-style: italic; color: var(--accent); }
+    .contact-sub { color: var(--muted); margin-bottom: 2rem; }
+    .contact-links { display: flex; flex-direction: column; gap: 0.8rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 0.8rem;
+      color: var(--ink); text-decoration: none; font-size: 0.9rem;
+      padding-bottom: 0.8rem; border-bottom: 1px solid var(--line);
+      transition: color 0.2s; width: fit-content;
+    }
+    .contact-link:hover { color: var(--accent); }
+    .contact-link span { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); min-width: 70px; }
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-field label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .form-field input, .form-field textarea {
+      background: var(--white); border: 1px solid var(--line);
+      padding: 0.85rem 1rem; font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; color: var(--ink); outline: none;
+      transition: border-color 0.2s; resize: vertical;
+    }
+    .form-field input:focus, .form-field textarea:focus { border-color: var(--accent); }
+    .form-submit {
+      background: var(--ink); color: var(--white); border: none;
+      padding: 0.9rem 2rem; font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: background 0.2s; align-self: flex-start;
+    }
+    .form-submit:hover { background: var(--accent); }
+
+    footer {
+      text-align: center; padding: 2.5rem 3rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.78rem; color: var(--muted); letter-spacing: 0.06em;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 4rem; gap: 3rem; }
+      .hero-visual { order: -1; }
+      .avatar-frame { width: 240px; height: 300px; }
+      section { padding: 4rem 1.5rem; }
+      .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+      hr.divider { margin: 0 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-logo">Deepesh Karthik Neelam</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Student · Developer · Curious Mind</p>
+      <h1 class="hero-name">Hello, I'm<br/><em>Deepesh Karthik Neelam</em></h1>
+      <p class="hero-desc">A student passionate about building things, learning endlessly, and turning ideas into reality.</p>
+      <a href="#projects" class="hero-cta">View my work →</a>
+    </div>
+    <div class="hero-visual">
+      <div style="position:relative;">
+        <div class="avatar-frame">
+          <img src="deepesh.jpeg" alt="Deepesh Karthik Neelam" />
+        </div>
+        <div class="avatar-border"></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <section id="about">
+    <div class="reveal">
+      <p class="section-label">About Me</p>
+      <h2 class="section-title">Who I am</h2>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-aside">"Learning something new every single day."</div>
+      <div class="about-body">
+        <p>Hi! I'm <strong>Deepesh Karthik Neelam</strong>, a student currently studying <strong>Electronics & Communications</strong> at <strong>Oslo International School</strong>.</p>
+        <p>I'm passionate about <strong>Music, Robotics, Hardware Technology, and Innovation</strong>. When I'm not studying, you'll find me working on personal projects, or exploring new ideas.</p>
+        <p>I'm actively looking for <strong>internships and part time opportunities</strong> where I can contribute, grow, and make an impact.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <section id="projects">
+    <div class="reveal">
+      <p class="section-label">Work</p>
+      <h2 class="section-title">Selected Projects</h2>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-num">01</div>
+        <h3 class="project-title">Dam Overflow System</h3>
+        <p class="project-desc">An AI-powered dam water-level monitoring system using sensors and microcontrollers to track levels, detect risks, and send alerts via a website.</p>
+        <div class="project-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">C++</span></div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-num">02</div>
+        <h3 class="project-title">Jetson Green AI </h3>
+        <p class="project-desc">Jetson Green AI is a Jetson-based system using AI vision to detect crop diseases, monitor plants, and send alerts for smarter farming, improving agricultural productivity and sustainability.</p>
+        <div class="project-tags"><span class="tag">Python</span><span class="tag">Data</span></div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-num">03</div>
+        <h3 class="project-title">Philippine Downy Mildew Detection</h3>
+        <p class="project-desc">An AI camera system detects Philippine Downy Mildew in corn plants early, analyzes images, marks infected locations, and alerts farmers to control spread and protect crop yield.</p>
+        <div class="project-tags"><span class="tag">Python</span><span class="tag">C++</span><span class="tag">Tensorflow</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <section id="skills">
+    <div class="reveal">
+      <p class="section-label">Expertise</p>
+      <h2 class="section-title">Skills & Tools</h2>
+    </div>
+    <div class="skills-layout reveal">
+      <div class="skill-group">
+        <p class="skill-group-title">Languages</p>
+        <ul class="skill-list">
+          <li>Python</li><li>Java</li><li>C#</li><li>C++</li><li>JavaScript</li><li>HTML & CSS</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Tools</p>
+        <ul class="skill-list">
+          <li>Git & GitHub</li><li>VS Code</li><li>Figma</li><li>PyCharm</li><li>Arduino IDE</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Frameworks</p>
+        <ul class="skill-list">
+          <li>React</li><li>Node.js</li><li>Angular</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Soft Skills</p>
+        <ul class="skill-list">
+          <li>Team Collaboration</li><li>Problem Solving</li><li>Communication</li><li>Leadership</li><li>Time Management</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="reveal">
+        <p class="section-label">Contact</p>
+        <h2 class="contact-heading">Let's <em>work<br/>together</em></h2>
+        <p class="contact-sub">Open to internships, collaborations, and cool projects. Feel free to reach out!</p>
+        <div class="contact-links">
+          <a href="mailto:deepesh123221@gmail.com" class="contact-link"><span>Email</span> deepesh123221@gmail.com</a>
+          <a href="https://www.linkedin.com/in/deepesh-karthik-2908b73ab/" class="contact-link" target="_blank"><span>LinkedIn</span> https://www.linkedin.com/in/deepesh-karthik-2908b73ab/</a>
+          <a href="https://github.com/deepesh-neelam" class="contact-link" target="_blank"><span>GitHub</span> https://github.com/deepesh-neelam</a>
+        </div>
+      </div>
+      <div class="contact-form reveal">
+        <div class="form-field">
+<form class="contact-form reveal" action="https://formspree.io/f/mlgpbblb" method="POST">
+  <div class="form-field">
+    <label for="name">Your Name</label>
+    <input type="text" id="name" name="name" placeholder="Jane Smith" />
+  </div>
+  <div class="form-field">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder="jane@example.com" />
+  </div>
+  <div class="form-field">
+    <label for="message">Message</label>
+    <textarea id="message" name="message" rows="5" placeholder="Hi, I'd love to chat about…"></textarea>
+  </div>
+  <button type="submit" class="form-submit">Send Message</button>
+</form>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Deepesh Karthik Neelam — Built with care ✦</p>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
