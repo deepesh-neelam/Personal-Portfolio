@@ -40,7 +40,7 @@ https://deepeshkarthikneelamcs.netlify.app/
 
 1. Download or clone this repository
 2. Open `index.html` in your browser
-3. That's it — no installs needed!
+3. That's it.. no installs needed!
 
 ---
 
