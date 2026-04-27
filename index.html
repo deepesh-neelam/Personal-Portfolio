@@ -17,6 +17,15 @@
       --white: #ffffff;
     }
 
+    [data-theme="dark"] {
+      --bg: #111110;
+      --ink: #f0ece6;
+      --muted: #7a7770;
+      --accent: #c9a96e;
+      --line: #2a2926;
+      --white: #1e1d1b;
+    }
+
     html { scroll-behavior: smooth; }
 
     body {
@@ -27,6 +36,7 @@
       font-size: 16px;
       line-height: 1.7;
       overflow-x: hidden;
+      transition: background 0.3s, color 0.3s;
     }
 
     nav {
@@ -37,18 +47,28 @@
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
       opacity: 0; animation: fadeDown 0.7s 0.1s forwards;
+      transition: background 0.3s, border-color 0.3s;
     }
+    [data-theme="dark"] nav { background: rgba(17, 17, 16, 0.88); }
     .nav-logo {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.3rem; font-weight: 500; letter-spacing: 0.04em;
       color: var(--ink); text-decoration: none;
     }
-    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; }
     .nav-links a {
       font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--muted); text-decoration: none; transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--ink); }
+
+    .theme-toggle {
+      background: none; border: 1px solid var(--line);
+      color: var(--muted); cursor: pointer;
+      padding: 0.4rem 0.8rem; font-size: 1rem;
+      border-radius: 2rem; transition: all 0.2s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
 
     .hero {
       min-height: 100vh;
@@ -231,6 +251,7 @@
       <li><a href="#projects">Projects</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#contact">Contact</a></li>
+      <li><button class="theme-toggle" onclick="toggleTheme()">🌙</button></li>
     </ul>
   </nav>
 
@@ -371,6 +392,21 @@
   </footer>
 
   <script>
+    // Theme toggle
+    const toggle = document.querySelector('.theme-toggle');
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+      toggle.textContent = isDark ? '🌙' : '☀️';
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    }
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      toggle.textContent = '☀️';
+    }
+
+    // Scroll reveal
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
